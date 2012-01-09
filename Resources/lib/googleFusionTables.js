@@ -4,12 +4,13 @@ var util = function(){
     return 'Google Fusion Tables Library';
   };
   self.list =  function(){
-
+    return '地ビールダイニング神楽坂ラ・カシェット';
   };
   self.post = function(/* array */ shopdata){
-
+    return true;
   };
   self.isRegisterd = function(/* array */ shopdata){
+    return true;
   };
 };
 
