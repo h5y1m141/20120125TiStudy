@@ -1,10 +1,10 @@
 var googleFusionTables = new (require('lib/googleFusionTables').util);
 var ui = require('ui/ui');
-
+googleFusionTables.init();
 
 var s = setInterval(function(){
   if(!googleFusionTables.auth){
-    googleFusionTables.login('h5y1m141@gmail.com','tkmt411106');
+    googleFusionTables.login();
   }else{
     Ti.API.info(googleFusionTables.auth);
     clearInterval(s);

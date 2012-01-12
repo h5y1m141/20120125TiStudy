@@ -2,17 +2,20 @@ var util = function(){
   var self = this;
   self.data = [];
   self.auth = null;
-  self.login= function(email,password){
+  self.init = function(){
+    Ti.include('lib/config.js');
+    self.password = config.password;
+    self.email = config.email;
+  };
+  self.login= function(){
     var _authToken = null;
     var auth = null;
     var xhr = Ti.Network.createHTTPClient();
     var config = {
-      email          : email,
-      password       : password,
       login_param :{
         accountType: 'HOSTED_OR_GOOGLE',
-        Email : email,
-        Passwd : password,
+        Email : self.email,
+        Passwd : self.password,
         'Content-Type': "application/x-www-form-urlencoded",
         service        : "reader"
       }
