@@ -1,1 +1,0 @@
-var runner_options = { classname:'', verbose:'' };
