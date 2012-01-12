@@ -59,5 +59,8 @@ var exports = {
     // });
 
     return tableView;
+  },
+  createMap:function(/* object */ json){
+    Ti.API.info(json);
   }
 };
