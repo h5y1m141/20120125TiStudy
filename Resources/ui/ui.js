@@ -1,29 +1,13 @@
 var exports = {
   createMap:function(/* object */ annotaion, /* function */ func){
+    var $$ = require('ui/styles').prop;
     var container = [];
     var len = annotaion.table.rows.length;
 
-    var mapView = Titanium.Map.createView({
-    mapType: Titanium.Map.STANDARD_TYPE,
-    region: {
-      latitude:35.676564,
-      longitude:139.765076,
-      // 1.0から0.001の間で縮尺尺度を示している。
-      // 数値が大きい方が広域な地図になる。donayamaさんの書籍P.179の解説がわかりやすい
-      latitudeDelta:0.01,
-      longitudeDelta:0.01
-    },
-    animate:true,
-    regionFit:true,
-    userLocation:true
-    });
+    var mapView = Titanium.Map.createView($$.mapView);
     for(var i=0;i<len;i++){
       var location = annotaion.table.rows[i][2].split(",");
-      var pin = Titanium.Map.createAnnotation({
-        pincolor:Titanium.Map.ANNOTATION_GREEN,
-        animate:true
-
-      });
+      var pin = Titanium.Map.createAnnotation($$.mapAnnotation);
       pin.latitude = location[0];
       pin.longitude =location[1];
       pin.title = annotaion.table.rows[i][0];
