@@ -65,6 +65,24 @@ var prop = {
   },
   tableView:{
     backgroundColor:theme.backgroundColor
+  },
+  mapView:{
+    mapType: Titanium.Map.STANDARD_TYPE,
+    region: {
+      latitude:35.676564,
+      longitude:139.765076,
+      // 1.0から0.001の間で縮尺尺度を示している。
+      // 数値が大きい方が広域な地図になる。donayamaさんの書籍P.179の解説がわかりやすい
+      latitudeDelta:0.01,
+      longitudeDelta:0.01
+    },
+    animate:true,
+    regionFit:true,
+    userLocation:true
+  },
+  mapAnnotation:{
+    pincolor:Titanium.Map.ANNOTATION_GREEN,
+    animate:true
   }
 };
 

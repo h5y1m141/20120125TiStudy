@@ -1,66 +1,45 @@
 var exports = {
-  createEntryRow:function(/* JSON */ entry){
-    var row = Ti.UI.createTableViewRow($$.prop.viewRow);
-    row.data = entry;
-    row.addEventListener('click', function(e){
-      var win = Titanium.UI.createWindow({left:20});
-      var label = Ti.UI.createLabel({
-        backgroundColor:'#000',
-        color:'#FFF',
-        text:e.row.data.title,
-        top:0,
-        left:0,
-        height:30
-      });
-      win.add(label);
-      var webView = Ti.UI.createWebView({top:30,left:0,height:'auto',width:'auto'});
-      webView.html = '<html><head><meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1"></head><body>'
-      + e.row.data.html_body
-      + '</body></html>';
-      win.add(webView);
-      win.open();
+  createMap:function(/* object */ annotaion, /* function */ func){
+    var container = [];
+    var len = annotaion.table.rows.length;
 
+    var mapView = Titanium.Map.createView({
+    mapType: Titanium.Map.STANDARD_TYPE,
+    region: {
+      latitude:35.676564,
+      longitude:139.765076,
+      // 1.0から0.001の間で縮尺尺度を示している。
+      // 数値が大きい方が広域な地図になる。donayamaさんの書籍P.179の解説がわかりやすい
+      latitudeDelta:0.01,
+      longitudeDelta:0.01
+    },
+    animate:true,
+    regionFit:true,
+    userLocation:true
     });
-    var title = Ti.UI.createLabel($$.prop.entry);
-    title.text = entry.title,
-    row.add(title);
-
-    var entrySummary = Ti.UI.createLabel($$.prop.entrySummary);
-    entrySummary.text = entry.html_body.replace(/<\/?[^>]+>/gi, "");
-    row.add(entrySummary);
-
-    var bloggerName = Ti.UI.createLabel($$.prop.bloggerName);
-    bloggerName.text = entry.blogger;
-    row.add(bloggerName);
-
-    var icon_iamge = Ti.UI.createImageView($$.prop.iconImage);
-    icon_iamge.image = '/ui/images/' + entry.blogger + '.gif';
-
-    row.add(icon_iamge);
-    return row;
-  },
-  createTableView:function(/* array */ rows){
-    /*
-      実際のエントリ表示とは別のRowを1つ作成してそこにラベルを表示
-     */
-    var headerRow = Ti.UI.createTableViewRow($$.prop.headerRow);
-    var label = Titanium.UI.createLabel($$.prop.label);
-    label.text = 'あすなろBLOG';
-    headerRow.add(label);
-
-    var tableView = Ti.UI.createTableView($$.tableView);
-    tableView.appendRow(headerRow);
-    var len = rows.length;
     for(var i=0;i<len;i++){
-      tableView.appendRow(rows[i]);
-    }
-    // tableView.addEventListener('click',function(e){
-    //   var index = e.index;
-    // });
+      var location = annotaion.table.rows[i][2].split(",");
+      var pin = Titanium.Map.createAnnotation({
+        pincolor:Titanium.Map.ANNOTATION_GREEN,
+        animate:true
 
-    return tableView;
-  },
-  createMap:function(/* object */ json){
-    Ti.API.info(json);
+      });
+      pin.latitude = location[0];
+      pin.longitude =location[1];
+      pin.title = annotaion.table.rows[i][0];
+      pin.subtitle = annotaion.table.rows[i][1];
+
+      container.push(pin);
+    }
+
+    mapView.addAnnotations(container);
+    createMainWindow(mapView);
   }
 };
+
+//private method
+function createMainWindow(mapView){
+  var win = Titanium.UI.createWindow();
+  win.add(mapView);
+  win.open();
+}

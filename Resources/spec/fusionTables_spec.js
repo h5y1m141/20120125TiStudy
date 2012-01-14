@@ -1,16 +1,20 @@
 describe("Google Fusion Tables", function() {
   var googleFusionTables;
   var util;
+  var tableList = {
+    mainTable:2466170,
+    craftBeer:2415682,
+    comment:2467514
+  };
   beforeEach(function() {
     googleFusionTables = new (require('lib/googleFusionTables').util);
   });
-  it("should be retreive librarry name", function() {
-    expect(googleFusionTables.name()).toEqual('Google Fusion Tables Library');
+  it("should be retreive table info", function() {
+    var obj;
+    var tableInfo = googleFusionTables.describeTable(tableList.craftBeer);
+    expect(typeof tableInfo).toEqual('object');
   });
 
-  it("should be shop name in list of BeerShopRestraunt", function() {
-    expect(googleFusionTables.list()).toEqual('地ビールダイニング神楽坂ラ・カシェット');
-  });
 
   it("should be post shop data into FutionTables", function() {
     var shopdata = [

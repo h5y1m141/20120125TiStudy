@@ -1,12 +1,16 @@
 var googleFusionTables = new (require('lib/googleFusionTables').util);
 var ui = require('ui/ui');
-googleFusionTables.init();
 
-var s = setInterval(function(){
-  if(!googleFusionTables.auth){
-    googleFusionTables.login();
-  }else{
-    Ti.API.info(googleFusionTables.auth);
-    clearInterval(s);
-  }
-},1000);
+var param ={
+  url:"https://www.google.com/fusiontables/api/query?sql=",
+  query:"DESCRIBE ",
+  tableid:googleFusionTables.tableList.craftBeer
+};
+var param1 ={
+  url:"https://www.google.com/fusiontables/api/query?sql=",
+  selectStatement:"SELECT shop_name,drink_or_buy,location ",
+  tableid:googleFusionTables.tableList.craftBeer
+};
+
+
+googleFusionTables.select('GET',param1);

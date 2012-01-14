@@ -1,25 +1,87 @@
 var util = function(){
   var self = this;
   self.data = [];
-  self.auth = null;
-  self.init = function(){
-    Ti.include('lib/config.js');
-    self.password = config.password;
-    self.email = config.email;
+  self.tableList = {
+    mainTable:2466170,
+    craftBeer:2415682,
+    comment:2467514
   };
+  self.tableInfo = null;
+  self.auth = null;
+  self.name = function(){
+    return 'Google Fusion Tables Library';
+  };
+  self.describeTable = function(method,param,callback){
+    var query = encodeURI(param.query);
+    var queryParameter = param.url+query + param.tableid;
+    self._callAPI(method,queryParameter);
+  };
+  self.select = function(method,param){
+
+    var sql = encodeURI(
+      param.selectStatement
+          + 'FROM '+ param.tableid
+          + " &jsonCallback=ui.createMap");
+    var queryParameter = param.url + sql;
+    self._callAPI(method,queryParameter);
+  };
+
+  self.insert = function(/* array */ shopdata){
+    return true;
+  };
+  self.isRegisterd = function(/* array */ shopdata){
+    return true;
+  };
+
+  self._callAPI= function(
+    /* string(GET or POST) */ method,
+    /* param{url:'xx',query:'xx',tableid:self.tableList.xxx}*/ param
+  ){
+
+    var s = setInterval(function(){
+      Ti.API.info(self.auth);
+      if(!self.auth){
+        self.login();
+      }else{
+        var xhr = Ti.Network.createHTTPClient();
+        xhr.setTimeout(3000);
+        xhr.setRequestHeader("Authorization",self.auth);
+        xhr.open(method,param);
+        xhr.onload = function(){
+          clearInterval(s);
+          eval(this.responseText);
+        };
+        xhr.error = function(){
+          clearInterval(s);
+          alert('no data');
+        };
+        xhr.send();
+      }
+    },1000);
+  };
+
   self.login= function(){
+    Ti.include('lib/config.js');
+
     var _authToken = null;
     var auth = null;
     var xhr = Ti.Network.createHTTPClient();
-    var config = {
-      login_param :{
+    var loginParam ={
         accountType: 'HOSTED_OR_GOOGLE',
-        Email : self.email,
-        Passwd : self.password,
+        Email : config.email,
+        Passwd : config.password,
         'Content-Type': "application/x-www-form-urlencoded",
         service        : "reader"
-      }
     };
+    /*
+      init()で、setIntervalを使って一定間隔ごとにauthキーが取得できてるか
+      どうか確認しているが、その際にxhr.setTimeoutの数値を上記
+      setIntervalの数値よりも大きくしておかないと、xhrが意図した処理に
+      ならないためこれは必須みたい
+      xhr.send() returns immediately before onload is called
+      http://developer.appcelerator.com/question/24471/xhrsend-returns-immediately-before-onload-is-called
+     */
+
     xhr.setTimeout(3000);
     xhr.open('POST','https://www.google.com/accounts/ClientLogin');
     xhr.onload = function(){
@@ -45,50 +107,8 @@ var util = function(){
         message: "ネットワーク接続が確立されていません。再度お試しください"
       });
       dialog.show();
-
     };
-    xhr.send(config.login_param);
-
-  };
-
-  self.name = function(){
-    return 'Google Fusion Tables Library';
-  };
-  self.list =  function(){
-    var s = setInterval(function(){
-      if(!self.auth){
-        self.login('h5y1m141@gmail.com','tkmt411106');
-      }else{
-        Ti.API.info(self.auth);
-        clearInterval(s);
-      }
-    },1000);
-
-    if(auth){
-
-    }else{
-
-    }
-
-  };
-  self.craftBeer = function(){
-    var flg=false,auth;
-    setInterval(function(){
-      if(!flg){
-        login('h5y1m141@gmail.com','tkmt411106');
-        Ti.API.info(self.auth);
-      }else{
-        clearInterval(function(){flg=true;});
-      }
-    },1000);
-
-
-  };
-  self.post = function(/* array */ shopdata){
-    return true;
-  };
-  self.isRegisterd = function(/* array */ shopdata){
-    return true;
+    xhr.send(loginParam);
   };
 };
 
@@ -99,105 +119,81 @@ var exports = {
 
 // private method
 
-function _get( auth, table, func){
-  var xhr = Ti.Network.createHTTPClient();
-  var tableList = {
-    mainTable:2466170,
-    craftBeer:2415682,
-    comment:2467514
-  };
-  xhr.setRequestHeader("Authorization",auth);
-  var baseUrl= "https://www.google.com/fusiontables/api/query?sql=SELECT+*+FROM+"+ tableList[table];
+function getSavePath(){
+  var path = Titanium.Filesystem.applicationDataDirectory + "storage/";
+  var file  = Ti.Filesystem.getFile(path);
+  //存在しないときは作成
+  if ( !file.exists() ) file.createDirectory();
+  Ti.API.info("storage="+path);
+  return path;
+}
 
-  xhr.open('GET',baseUrl);
-  xhr.onload = function(){
-    var result = this.responseText;
-    func(result);
-  };
-  xhr.send();
-};
+function fetch_remote_image(url, tmpPath, callback, height, width, defaultImage, timeout) {
 
 
-/*
-  http://stackoverflow.com/questions/1293147/javascript-code-to-parse-csv-data*/
-function CSVToArray( strData, strDelimiter ){
-  // Check to see if the delimiter is defined. If not,
-  // then default to comma.
-  strDelimiter = (strDelimiter || ",");
+  var imagePath = tmpPath + Ti.Utils.md5HexDigest(url) + '.jpg';
+  var imagefile = Ti.Filesystem.getFile(imagePath);
 
-  // Create a regular expression to parse the CSV values.
-  var objPattern = new RegExp(
-    (
-      // Delimiters.
-      "(\\" + strDelimiter + "|\\r?\\n|\\r|^)" +
-
-      // Quoted fields.
-      "(?:\"([^\"]*(?:\"\"[^\"]*)*)\"|" +
-
-      // Standard fields.
-      "([^\"\\" + strDelimiter + "\\r\\n]*))"
-    ),
-    "gi"
-  );
-
-
-  // Create an array to hold our data. Give the array
-  // a default empty first row.
-  var arrData = [[]];
-
-  // Create an array to hold our individual pattern
-  // matching groups.
-  var arrMatches = null;
-
-
-  // Keep looping over the regular expression matches
-  // until we can no longer find a match.
-  while (arrMatches = objPattern.exec( strData )){
-
-    // Get the delimiter that was found.
-    var strMatchedDelimiter = arrMatches[ 1 ];
-
-    // Check to see if the given delimiter has a length
-    // (is not the start of string) and if it matches
-    // field delimiter. If id does not, then we know
-    // that this delimiter is a row delimiter.
-    if (
-      strMatchedDelimiter.length &&
-          (strMatchedDelimiter != strDelimiter)
-    ){
-
-      // Since we have reached a new row of data,
-      // add an empty row to our data array.
-      arrData.push( [] );
-
-    }
-
-
-    // Now that we have our delimiter out of the way,
-    // let's check to see which kind of value we
-    // captured (quoted or unquoted).
-    if (arrMatches[ 2 ]){
-
-      // We found a quoted value. When we capture
-      // this value, unescape any double quotes.
-      var strMatchedValue = arrMatches[ 2 ].replace(
-        new RegExp( "\"\"", "g" ),
-        "\""
-      );
-
-    } else {
-
-      // We found a non-quoted value.
-      var strMatchedValue = arrMatches[ 3 ];
-
-    }
-
-
-    // Now that we have our value string, let's add
-    // it to the data array.
-    arrData[ arrData.length - 1 ].push( strMatchedValue );
+  if (imagefile.exists()) {
+    callback(imagePath);
   }
 
-  // Return the parsed data.
-  return( arrData );
-};
+  defaultImage = defaultImage || 'images/dummy_profile50x50.png';
+  timeout = timeout || 30000;
+  height = height || 64;
+  width = width || 64;
+
+  var xhr = Ti.Network.createHTTPClient();
+  xhr.setTimeout(timeout);
+
+  xhr.onerror = function(e) {
+    callback(defaultImage);
+  };
+
+  xhr.onload = function(){
+    var remoteimage = this.responseData;
+
+    if (!remoteimage) {
+      imagePath = defaultImage;
+    } else {
+      var imageView = Ti.UI.createImageView({
+        image: remoteimage,
+        width: width,
+        height: height
+      });
+
+      var tmpImage = imageView.toImage();
+      var imagefile = Ti.Filesystem.getFile(imagePath);
+      imagefile.write(tmpImage);
+    }
+
+    callback(imagePath);
+  };
+
+  xhr.open('GET', url);
+  xhr.send();
+}
+//pinを追加する
+function addFriendPushPin(lat, lng, title, subtitle, image, id,mapview) {
+  var friendAnnotation;
+  //画像をキャッシュする
+  fetch_remote_image(image, getSavePath(), function(remoteImage) {
+    var imagefile = Ti.Filesystem.getFile(remoteImage);
+    Ti.API.info("now:"+title);
+    if (imagefile.exists()) {
+      Ti.API.info("now1:"+remoteImage);
+      friendAnnotation = Ti.Map.createAnnotation({
+        latitude: lat,
+        longitude: lng,
+        title: title,
+        subtitle: subtitle,
+        image: remoteImage,
+        animate:true,
+        //leftButton: 'appicon.png',
+        myid: id
+      });
+
+      mapview.addAnnotation(friendAnnotation);
+    }
+  }, 32, 32);
+}
