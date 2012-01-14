@@ -11,17 +11,25 @@ var util = function(){
   self.name = function(){
     return 'Google Fusion Tables Library';
   };
-  self.describeTable = function(method,param,callback){
+  self.describeTable = function(method,param){
+    if(param.query && param.url && param.tableid && param.callback){
     var query = encodeURI(param.query);
     var queryParameter = param.url+query + param.tableid;
     self._callAPI(method,queryParameter);
+    }else {
+      Ti.API.error('no param ');
+    }
   };
   self.select = function(method,param){
-    if(param.url && param.selectStatement && param.tableid && param.callback){
-      var sql = encodeURI(
-        param.selectStatement
-            + 'FROM '+ param.tableid
-            + " &jsonCallback=" + param.callback);
+    /*
+      Fusion TablesのクエリーパラメータにjsonCallback=xxxx
+      を付けることでCSVではなくJSONPでデータ取得できる。
+      param.callbackにMapViewを生成するメソッド名を渡すことで
+
+     */
+    if(param.url && param.sqlStatement && param.callback){
+      var sql = encodeURI(param.sqlStatement + " &jsonCallback=" + param.callback);
+      Ti.API.info(sql);
       var queryParameter = param.url + sql;
       self._callAPI(method,queryParameter);
     } else {
