@@ -17,13 +17,16 @@ var util = function(){
     self._callAPI(method,queryParameter);
   };
   self.select = function(method,param){
-
-    var sql = encodeURI(
-      param.selectStatement
-          + 'FROM '+ param.tableid
-          + " &jsonCallback=ui.createMap");
-    var queryParameter = param.url + sql;
-    self._callAPI(method,queryParameter);
+    if(param.url && param.selectStatement && param.tableid && param.callback){
+      var sql = encodeURI(
+        param.selectStatement
+            + 'FROM '+ param.tableid
+            + " &jsonCallback=" + param.callback);
+      var queryParameter = param.url + sql;
+      self._callAPI(method,queryParameter);
+    } else {
+      Ti.API.error('no param ');
+    }
   };
 
   self.insert = function(/* array */ shopdata){
