@@ -122,9 +122,39 @@ var util = function(){
     xhr.send(loginParam);
   };
 };
-
+var schema =  {
+  mainTable:{
+    id:2466170,
+    cols:{
+      shop_name:'string',
+      comment:'string',
+      user_id:'string',
+      post_date:'datetime',
+      drink_or_buy:'number',
+      location:'location'
+    }
+  },
+  craftBeer:{
+    id:2415682,
+    cols:{
+      shop_name:'string',
+      drink_or_buy:'number',
+      location:'location'
+    }
+  },
+  comment:{
+    id:2467514,
+    cols:{
+      shop_name:'string',
+      comment:'string',
+      user_id:'string',
+      post_date:'datetime'
+    }
+  }
+};
 var exports = {
-  util:util
+  util:util,
+  schema:schema
 };
 
 

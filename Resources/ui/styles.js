@@ -11,10 +11,24 @@ var prop = {
   win: {
     backgroundColor:theme.backgroundColor
   },
+  mainView:{
+    width:320,
+    height:300,
+    left:0,
+    top:0
+  },
+  subView:{
+    width:320,
+    height:200,
+    left:0,
+    top:305
+  },
   label : {
     color:'#FFF',
     textAlign:theme.textAlign,
-    width:theme.width
+    width:theme.width,
+    top:5,
+    left:5
   },
   tab1:{
     icon:theme.viewIcon
@@ -22,48 +36,19 @@ var prop = {
   tab2:{
     icon:theme.uiIcon
   },
-  headerRow:{
-    width:'auto',
-    backgroundColor:'#385292',
-    height:40,
-    hasDetail:false
-  },
   viewRow:{
-    width:'auto',
-    height:'auto',
-    hasDetail:true
+    width:320,
+    height:20
   },
-  entrySummary:{
-    font:{fontSize:12},
-    left:55,
-    top:30,
-    width:245,
-    height:40
-  },
-  entry:{
+  shopName:{
     font:{fontSize:16},
     color:'#000',
-    left:55,
-    top:5,
-    width:'auto',
-    height:20
-  },
-
-  bloggerName:{
-    font:{fontSize:12},
-    color:'#000',
-    left:5,
-    top:40,
-    width:'auto',
-    height:20
-  },
-  iconImage:{
-    left:5,
-    top:5,
-    width:30,
-    height:30
+    left:0,
+    top:0
   },
   tableView:{
+    width:320,
+    height:200,
     backgroundColor:theme.backgroundColor
   },
   mapView:{
