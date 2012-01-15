@@ -12,4 +12,8 @@ var param1 ={
 };
 
 
-googleFusionTables.select('GET',param1);
+//googleFusionTables.select('GET',param1);
+
+var h = require('action/handler');
+var result = h.readSchema('craftBeer');
+alert(result.id);
