@@ -12,8 +12,26 @@ var param1 ={
 };
 
 
-//googleFusionTables.select('GET',param1);
+googleFusionTables.select('GET',param1);
 
-var h = require('action/handler');
-var result = h.readSchema('craftBeer');
-alert(result.id);
+
+// var testData = {
+//   "table": {
+//     "cols":["shop_name","comment","user_id","post_date"],
+//     "rows":[
+//      ["地ビールダイニング神楽坂ラ・カシェット","南信州のアンバーエールが美味しかった","h5y1m141","2011/12/16"],
+//      ["地ビールダイニング神楽坂ラ・カシェット","桃のビールとマスカットのビール飲んだけどマスカットのほうが好みだった","tnakamaw","12/16/11"]
+//    ]
+//   }
+// };
+// var obj = ui.util(eval(testData));
+// Ti.API.info('after:'+obj[0].comment);
+
+// var param2 ={
+//   url:"https://www.google.com/fusiontables/api/query?sql=",
+//   sqlStatement:"SELECT * FROM 2466170",
+//   callback:"ui.util"
+// };
+
+
+// googleFusionTables.select('GET',param2);
