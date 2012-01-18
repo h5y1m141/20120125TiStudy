@@ -43,16 +43,13 @@ var exports = {
 
     var len = obj.table.rows.length;
     var len1 = obj.table.cols.length;
-    var s = require('lib/googleFusionTables').schema;
+    var schema = require('lib/googleFusionTables').schema;
+    var columns = schema[tableid].cols;
 
-    // テーブルIDかテーブル名を何らかの形で引数に取る
-    // やり方が思いつかないため、ひとまず決め打ち
-    var tableName = 'mainTable';
-    var result = h.readSchema(tableName);
-    var columns = result.cols;
-    var container = [];
+    var _container = [];
     var _obj ={};
 
+    var mapView = Titanium.Map.createView($$.mapView);
     for(var i=0;i<len;i++){
       for(var j=0;j<len1;j++){
 
@@ -61,27 +58,29 @@ var exports = {
 
         var columnsName = obj.table.cols[j];
         if(columns[columnsName]==='location'){
-          var location = obj.table.rows[i][j];
+          var location = obj.table.rows[i][j].split(",");
           _obj.latitude  = location[0];
           _obj.longitude = location[1];
+
         }else{
           _obj[columnsName] = obj.table.rows[i][j];
         }
       }
-
-      container.push(_obj);
+      var pin = Titanium.Map.createAnnotation($$.mapAnnotation);
+      pin.latitude = _obj.latitude;
+      pin.longitude = _obj.longitude;
+      pin.title = _obj.shop_name;
+      mapView.addAnnotations([pin]);
+      // _container.push(_obj);
+      // Ti.API.info(_container[i].shop_name);
     }
 
-    var mapView = createMap(container);
-    Ti.API.info('start map view create ');
-    //var tableView = createTableView(container);
+
+
     var win = Titanium.UI.createWindow();
-    var mainView = Titanium.UI.createView($$.mainView);
-    var subView = Titanium.UI.createView($$.subView);
-    mainView.add(mapView);
-    win.add(mainView);
-    win.open();
-    //return container;
+    win.add(mapView);
+    return win.open();
+
   }
 };
 
@@ -90,22 +89,38 @@ var exports = {
 
 function createMap(/* object */ annotaion){
 
-  var container = [];
+  var pins = [];
   var rows =  [];
   var len = annotaion.length;
 
   var mapView = Titanium.Map.createView($$.mapView);
   for(var i=0;i<len;i++){
     var pin = Titanium.Map.createAnnotation($$.mapAnnotation);
-    pin.latitude = annotaion.latitude;
-    pin.longitude =annotaion.longitude;
+    pin.latitude  = annotaion.latitude;
+    pin.longitude = annotaion.longitude;
     pin.title = annotaion[shop_name];
     pin.subtitle = annotaion[comment];
-    container.push(pin);
+    pins.push(pin);
   }
-  return container;
+  return pins;
 
 }
+function createPin(/* array*/ annotaion){
+  var pins = [];
+  var len = annotaion.length;
+
+  for(var i=0;i<len;i++){
+    var _pin = Titanium.Map.createAnnotation($$.mapAnnotation);
+    _pin.latitude  = annotaion[i].latitude;
+    _pin.longitude = annotaion[i].longitude;
+    _pin.title = annotaion[i].shop_name;
+    Ti.API.info('createPin latitude:'+ annotaion[i].shop_name);
+    pins.push(_pin);
+  }
+  return pins;
+
+}
+
 function createMainWindow(mapView,tableView){
   var win = Titanium.UI.createWindow();
   var mainView = Titanium.UI.createView($$.mainView);

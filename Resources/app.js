@@ -12,7 +12,7 @@ var param1 ={
 };
 
 
-googleFusionTables.select('GET',param1);
+//googleFusionTables.select('GET',param1);
 
 
 // var testData = {
@@ -27,11 +27,12 @@ googleFusionTables.select('GET',param1);
 // var obj = ui.util(eval(testData));
 // Ti.API.info('after:'+obj[0].comment);
 
-// var param2 ={
-//   url:"https://www.google.com/fusiontables/api/query?sql=",
-//   sqlStatement:"SELECT * FROM 2466170",
-//   callback:"ui.util"
-// };
+var tableid   =2415682;
+var tableName ='craftBeer';
+var param2 ={
+  url:"https://www.google.com/fusiontables/api/query?sql=",
+  sqlStatement:"SELECT * FROM " + tableid,
+  callback:"ui.util"
+};
 
-
-// googleFusionTables.select('GET',param2);
+googleFusionTables.select('GET',param2);

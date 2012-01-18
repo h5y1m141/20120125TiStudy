@@ -29,7 +29,7 @@ var util = function(){
      */
     if(param.url && param.sqlStatement && param.callback){
       var sql = encodeURI(param.sqlStatement + " &jsonCallback=" + param.callback);
-      Ti.API.info(sql);
+      Ti.API.info('sql check:'+ sql);
       var queryParameter = param.url + sql;
       self._callAPI(method,queryParameter);
     } else {
@@ -50,7 +50,7 @@ var util = function(){
   ){
 
     var s = setInterval(function(){
-      Ti.API.info(self.auth);
+      Ti.API.info('_callAPI: auth check:'+ self.auth);
       if(!self.auth){
         self.login();
       }else{
@@ -123,8 +123,7 @@ var util = function(){
   };
 };
 var schema =  {
-  mainTable:{
-    id:2466170,
+  "2466170":{
     cols:{
       shop_name:'string',
       comment:'string',
@@ -134,16 +133,14 @@ var schema =  {
       location:'location'
     }
   },
-  craftBeer:{
-    id:2415682,
+  "2415682":{
     cols:{
       shop_name:'string',
       drink_or_buy:'number',
       location:'location'
     }
   },
-  comment:{
-    id:2467514,
+  "2467514":{
     cols:{
       shop_name:'string',
       comment:'string',
