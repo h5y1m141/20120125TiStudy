@@ -1,57 +1,21 @@
 var theme = {
   color:'#999',
   backgroundColor:'#fff',
-  font:{fontSize:20,fontFamily:'Helvetica Neue'},
-  textAlign:'center',
-  width:'auto',
-  viewIcon:'KS_nav_views.png',
-  uiIcon:'KS_nav_ui.png'
+  viewIcon:'KS_nav_views.png'
 };
 var prop = {
   win: {
     backgroundColor:theme.backgroundColor
   },
-  mainView:{
-    width:320,
-    height:300,
-    left:0,
-    top:0
-  },
-  subView:{
-    width:320,
-    height:200,
-    left:0,
-    top:305
-  },
-  label : {
-    color:'#FFF',
-    textAlign:theme.textAlign,
-    width:theme.width,
-    top:5,
-    left:5
-  },
   tab1:{
-    icon:theme.viewIcon
-  },
-  tab2:{
-    icon:theme.uiIcon
-  },
-  viewRow:{
-    width:320,
-    height:20
-  },
-  shopName:{
-    font:{fontSize:16},
-    color:'#000',
-    left:0,
-    top:0
-  },
-  tableView:{
-    width:320,
-    height:200,
-    backgroundColor:theme.backgroundColor
+    icon:theme.viewIcon,
+    title:'MapView'
   },
   mapView:{
+    width: 320,
+    height:280,
+    top:200,
+    left:0,
     mapType: Titanium.Map.STANDARD_TYPE,
     region: {
       latitude:35.676564,
@@ -67,7 +31,38 @@ var prop = {
   },
   mapAnnotation:{
     pincolor:Titanium.Map.ANNOTATION_GREEN,
-    animate:true
+    animate:false
+  },
+  tableView:{
+    width: 320,
+    height:200,
+    top:0,
+    left:0
+  },
+  viewRow:{
+    width:320,
+    height:'auto'
+  },
+  shopName:{
+    font:{fontSize:14},
+    color:'#000',
+    left:80,
+    top:5,
+    width:230,
+    height:20
+  },
+  address:{
+    font:{fontSize:10},
+    left:80,
+    top:30,
+    width:230,
+    height:20
+  },
+  pict:{
+    left:5,
+    top:5,
+    width:60,
+    height:60
   }
 };
 
