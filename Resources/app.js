@@ -25,6 +25,27 @@ var shopAddress = [
     latitude:35.656134,
     longitude:139.734884,
     pict:'pict/003.png'
+  },
+  {
+    name:'キャロリーヌ',
+    address:'東京都練馬区春日町6-10-28',
+    latitude:35.753396,
+    longitude:139.634192,
+    pict:'pict/004.png'
+  },
+  {
+    name:'ラトリエコッコ',
+    address:'東京都港区白金5-7-6',
+    latitude:35.644722,
+    longitude:139.727752,
+    pict:'pict/005.png'
+  },
+  {
+    name:'CRAFT BEER MARKET 虎ノ門店',
+    address:'東京都港区西新橋1-23-3',
+    latitude:35.6683,
+    longitude:139.751549,
+    pict:'pict/006.png'
   }
 ];
 var container = [];
@@ -34,7 +55,7 @@ for(var i=0;i<len;i++){
   container.push(row);
 }
 var tableView  = ui.createTableView(container);
-var mapView = Titanium.Map.createView($$.mapView);
-win1.add(mapView);
+
+
 win1.add(tableView);
 win1.open();

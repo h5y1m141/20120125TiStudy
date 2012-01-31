@@ -13,7 +13,7 @@ var prop = {
   },
   mapView:{
     width: 320,
-    height:280,
+    height:640,
     top:200,
     left:0,
     mapType: Titanium.Map.STANDARD_TYPE,
@@ -35,7 +35,7 @@ var prop = {
   },
   tableView:{
     width: 320,
-    height:200,
+    height:640,
     top:0,
     left:0
   },
