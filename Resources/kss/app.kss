@@ -1,0 +1,15 @@
+.myTab { 
+    icon: KS_nav_ui.png;
+}
+window {
+    background-color: #ccc;
+    bar-color: #FFF;
+}
+.myL {
+    text-align: center;
+    color: #333;
+    shadow-color: #fff;
+    shadow-offset-y: -1;
+    font-size: 20;
+    font-weight: bold;
+}
