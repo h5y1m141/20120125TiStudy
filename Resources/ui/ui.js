@@ -8,13 +8,27 @@ var exports = {
         e.rowData.data.latitude,e.rowData.data.longitudeにて
         緯度経度情報を取得可能
       */
-      var pin = Titanium.Map.createAnnotation($$.mapAnnotation);
-      pin.latitude = e.rowData.data.latitude,
-      pin.longitude = e.rowData.data.longitude,
-      pin.title = e.rowData.data.name,
-      setMapView(pin,e.rowData.data.latitude,e.rowData.data.longitude);
 
-    });
+      var xhr = Titanium.Network.createHTTPClient();
+      // URLエンコード処理をこれで行なってくれる
+
+      xhr.autoEncodeUrl = true;
+      xhr.open('GET','http://www.geocoding.jp/api/?v=1.1&q=' + e.rowData.data.address);
+      xhr.onload = function(){
+        var xml = this.responseXML;
+        var lat = xml.documentElement.getElementsByTagName("lat").item(0).text;
+        var lng = xml.documentElement.getElementsByTagName("lng").item(0).text;
+        var pin = Titanium.Map.createAnnotation($$.mapAnnotation);
+        Ti.API.info('lat:'+ lat +'lng:' +lng);
+        pin.latitude = lat;
+        pin.longitude = lng;
+        setMapView(pin,lat,lng);
+      };
+      xhr.onerror = function(error){
+        // errorにはエラー事由の文字列オブジェクトが入ってくる。
+      };
+      xhr.send();
+      });
     var shopName = Ti.UI.createLabel($$.shopName);
     shopName.text = address.name,
     row.add(shopName);
