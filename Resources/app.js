@@ -16,4 +16,8 @@ var tableView  = ui.createTableView(container);
 var mapView = Titanium.Map.createView($$.mapView);
 win1.add(mapView);
 win1.add(tableView);
+var actInd = Titanium.UI.createActivityIndicator($$.actInd);
+actInd.hide();
+win1.add(actInd);
+
 win1.open();

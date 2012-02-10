@@ -63,6 +63,19 @@ var prop = {
     top:5,
     width:60,
     height:60
+  },
+  actInd:{
+    top:300,
+    height:55,
+    width:'auto',
+    opacity:0.7,
+    color:'#FFFFFF',
+    backgroundColor:'#000',
+    borderRadius:5,
+    borderColor:'#000',
+    font:{fontFamily:'Helvetica Neue', fontSize:14},
+    message:' Loading...',
+    style:Titanium.UI.iPhone.ActivityIndicatorStyle.PLAIN
   }
 };
 

@@ -4,14 +4,9 @@ var exports = {
     var row = Ti.UI.createTableViewRow($$.viewRow);
     row.data = address;
     row.addEventListener('click', function(e){
-      /*
-        e.rowData.data.latitude,e.rowData.data.longitudeにて
-        緯度経度情報を取得可能
-      */
-
+      actInd.show();
       var xhr = Titanium.Network.createHTTPClient();
       // URLエンコード処理をこれで行なってくれる
-
       xhr.autoEncodeUrl = true;
       xhr.open('GET','http://www.geocoding.jp/api/?v=1.1&q=' + e.rowData.data.address);
       xhr.onload = function(){
@@ -55,6 +50,7 @@ var exports = {
 
 // private method
 function setMapView(pin,latitude,longitude){
+  actInd.hide();
   mapView.addAnnotations([pin]);
   mapView.setLocation({
     latitude :latitude,
