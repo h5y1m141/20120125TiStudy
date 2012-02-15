@@ -1,0 +1,24 @@
+var exports = {
+	info:[
+	{
+		name:'地ビールダイニング',
+		address:'東京都新宿区',
+		latitude:35.700457,
+		longitude:139.742207,
+		pict:'pict/001.png'
+	},
+	{
+		name:'イノダコーヒー',
+		address:'東京都千代田区',
+		latitude:35.683016,
+		longitude:139.742207,
+		pict:'pict/002.png'
+	},{
+		name:'nicoドーナッツ',
+		address:'東京都港区',
+		latitude:35.656134,
+		longitude:139.742207,
+		pict:'pict/003.png'
+		}
+	]
+}
